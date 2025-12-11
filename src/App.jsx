@@ -5,8 +5,10 @@ import TheaterInfoPage from "./pages/TheaterInfoPage";
 import ReservationPage from "./pages/ReservationPage";
 
 function App() {
+  const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Toaster position="bottom-center" richColors />
 
       <Routes>
