@@ -23,6 +23,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      HAS_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+      HAS_SOME_KEY: ${{ secrets.VITE_SOME_KEY }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,7 +47,7 @@ jobs:
           echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> $GITHUB_ENV
           echo "VITE_SOME_KEY=${{ secrets.VITE_SOME_KEY }}" >> $GITHUB_ENV
         shell: bash
-        if: secrets.VITE_API_BASE_URL != '' || secrets.VITE_SOME_KEY != ''
+        if: env.HAS_API_BASE_URL != '' || env.HAS_SOME_KEY != ''
 
       - name: Build
         run: npm run build
