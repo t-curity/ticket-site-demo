@@ -6,6 +6,9 @@ import path from 'path';
 // https://vite.dev/config/
 export default defineConfig({
   base: "/ticket-site-demo/",
+  build: {
+    sourcemap: true,
+  },
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
