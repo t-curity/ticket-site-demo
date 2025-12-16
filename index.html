@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,7 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ticket-site</title>
 
-    <script src="/tcurity-sdk.js"></script>
+    <script>
+      (function () {
+        const isGithubPages = location.hostname.endsWith("github.io");
+
+        const script = document.createElement("script");
+        script.src = isGithubPages
+          ? "https://t-curity.github.io/captcha-sdk/sdk.js"
+          : "http://localhost:3000/sdk.js";
+
+        script.defer = true;
+        document.head.appendChild(script);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
