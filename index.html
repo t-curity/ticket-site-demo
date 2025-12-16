@@ -5,8 +5,12 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ticket-site</title>
-
     <script>
+      window.__TCURITY__ = {
+        mode: "dev",
+        baseUrl: "/api",
+        timeoutMs: 15000,
+      };
       (function () {
         const isGithubPages = location.hostname.endsWith("github.io");
 
