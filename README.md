@@ -51,6 +51,34 @@ npm run dev
 
 서버가 시작되면 http://localhost:5173/ticket-site-demo/ 로 접속할 수 있습니다.
 
+### 🔌 CAPTCHA SDK 로컬 모드
+
+이 데모는 HTML에서 `mode: "local"` 설정을 사용하면 **별도 설정 없이 로컬에서 실행 중인 백엔드 서버로 자동 요청**하도록 구성되어 있습니다.
+
+`baseUrl: "/api"`는 Vite 개발 서버의 proxy 설정을 통해 로컬 백엔드로 연결되며, 동일한 SDK 코드로 로컬 개발 환경과 GitHub Pages(데모 환경)를 모두 지원합니다.
+
+```html
+<script>
+  window.__TCURITY__ = {
+    mode: "local",
+    baseUrl: "/api",
+    timeoutMs: 15000,
+  };
+</script>
+```
+
+```javascript
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+```
+
 ## ⚙️ 배포 (CI/CD)
 
 이 프로젝트는 `.github/workflows/deploy.yml` 파일에 정의된 GitHub Actions를 사용하여 자동 배포됩니다.
