@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import clsx from "clsx";
 
@@ -10,6 +11,8 @@ import messages from "@data/messages";
 
 export default function ReservationPage() {
   const { TCuritySDK } = window;
+
+  const navigate = useNavigate();
 
   const [seats] = useState(() =>
     [...Array(9 * 8)].map(() => Math.random() > 0.7),
