@@ -2,19 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 
-import { ticketService } from "@api/TicketService";
 import WaitingModal from "@components/WaitingModal";
 import Card from "@components/Card";
 import CardSectionLayout from "@components/CardSectionLayout";
 
 import poster_portrait from "@assets/poster_portrait.jpeg";
 import poster_landscape from "@assets/poster_landscape.jpeg";
-import messages from "@data/messages";
 import movieInfo from "@data/movieInfo";
 
 export default function TheaterInfoPage() {
-  const { TCuritySDK } = window;
-
   const navigate = useNavigate();
   const [isWaiting, setIsWaiting] = useState(false);
 
@@ -24,17 +20,6 @@ export default function TheaterInfoPage() {
 
   const handleWaitingComplete = async () => {
     setIsWaiting(false);
-
-    const session_id = await TCuritySDK.captcha("mock-client-id");
-    console.log(session_id);
-
-    const verified = await ticketService.verify(session_id);
-
-    if (!verified) {
-      alert(messages.CAPTCHA.FAIL);
-      return;
-    }
-
     navigate("/reservation");
   };
 

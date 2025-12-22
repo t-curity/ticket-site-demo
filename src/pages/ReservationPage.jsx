@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import clsx from "clsx";
 
@@ -9,8 +9,10 @@ import movieInfo from "@data/movieInfo";
 import messages from "@data/messages";
 
 export default function ReservationPage() {
+  const { TCuritySDK } = window;
+
   const [seats] = useState(() =>
-    [...Array(9 * 8)].map(() => Math.random() > 0.7)
+    [...Array(9 * 8)].map(() => Math.random() > 0.7),
   );
 
   const [totalPaymentAmount] = useState(0);
@@ -18,6 +20,30 @@ export default function ReservationPage() {
   const handleChargeClick = () => {
     toast.error(messages.PAYMENT.NOT_IMPLEMENTED);
   };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const session_id = await TCuritySDK.captcha("mock-client-id");
+
+        const verified = await ticketService.verify(session_id);
+        if (!verified) {
+          alert(messages.CAPTCHA.FAIL);
+          navigate("/");
+        }
+      } catch (error) {
+        if (
+          error instanceof TCuritySDK.errors.InactivityTimeoutError ||
+          error instanceof TCuritySDK.errors.UserCancelledError
+        ) {
+          navigate("/");
+          return;
+        }
+
+        console.error(error);
+      }
+    })();
+  }, []);
 
   return (
     <main className="min-h-screen bg-gray-100 flex items-start md:items-center px-4 md:px-6 lg:px-8 py-6">
@@ -39,14 +65,12 @@ export default function ReservationPage() {
   );
 }
 
-function TitleSection({movieInfo, className=""}) {
+function TitleSection({ movieInfo, className = "" }) {
   return (
     <header className={className}>
       <h1 className="text-3xl font-bold">{movieInfo.title}</h1>
       <p className="text-xl text-gray-600">
-        <span>
-          {movieInfo.dates.join(" ~ ")}
-        </span>
+        <span>{movieInfo.dates.join(" ~ ")}</span>
         <span className="hidden md:inline mx-2">|</span>
         <span className="block md:inline">{movieInfo.venue}</span>
       </p>
@@ -58,10 +82,12 @@ function TitleSection({movieInfo, className=""}) {
 function SeatMapSection({ seats, className = "" }) {
   return (
     // Seat Map 크기 고정 (가로 360px, 세로 450px)
-    <section className={clsx(
-      "min-h-[450px] min-w-[360px] flex flex-col items-center justify-center gap-4",
-      className
-      )}>
+    <section
+      className={clsx(
+        "min-h-[450px] min-w-[360px] flex flex-col items-center justify-center gap-4",
+        className,
+      )}
+    >
       <div className="h-[450px] w-[360px] flex flex-col items-center justify-center gap-4 bg-gray-100 p-4 rounded-lg border-2 border-dashed border-gray-300">
         <div className="mb-0 w-64 h-12 bg-gray-300 rounded flex items-center justify-center text-gray-500">
           무대
@@ -95,7 +121,6 @@ function SeatMapSection({ seats, className = "" }) {
 function ChargeSection({ movieInfo, totalPaymentAmount, handleChargeClick }) {
   return (
     <section className="flex flex-col flex-1">
-
       <div className="space-y-4 p-4">
         <div className="font-bold text-md">선택 정보</div>
         <ul className="space-y-2 mb-8 min-h-[100px]"></ul>
