@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const INITIAL_WAITING_COUNT = 100;
 
 export default function WaitingModal({ onComplete }) {
   const [waitingCount, setWaitingCount] = useState(INITIAL_WAITING_COUNT);
+  const completedRef = useRef(false);
 
   useEffect(() => {
     const intervalTime = 16;
@@ -15,7 +16,10 @@ export default function WaitingModal({ onComplete }) {
         if (nextCount <= 0) {
           clearInterval(interval);
 
-          if (onComplete) setTimeout(onComplete, 0);
+          if (completedRef.current === false) {
+            completedRef.current = true;
+            onComplete?.();
+          }
         }
 
         return nextCount;
@@ -23,7 +27,7 @@ export default function WaitingModal({ onComplete }) {
     }, intervalTime);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [onComplete]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
