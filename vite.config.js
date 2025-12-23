@@ -14,7 +14,7 @@ export default defineConfig({
       },
     },
   },
-  base: "/ticket-site-demo/",
+  base: "/ticket-site-demo",
   build: {
     sourcemap: true,
   },
