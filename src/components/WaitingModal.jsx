@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const INITIAL_WAITING_COUNT = 100;
 
@@ -6,33 +6,29 @@ export default function WaitingModal({ onComplete }) {
   const [waitingCount, setWaitingCount] = useState(INITIAL_WAITING_COUNT);
   const completedRef = useRef(false);
 
+  // 카운트 감소만 담당
   useEffect(() => {
     document.body.style.overflow = "hidden";
 
     const intervalTime = 16;
-    const decreament = (INITIAL_WAITING_COUNT * intervalTime) / 1000;
+    const decrement = (INITIAL_WAITING_COUNT * intervalTime) / 1000;
     const interval = setInterval(() => {
-      setWaitingCount((count) => {
-        const nextCount = count > 0 ? count - decreament : 0;
-
-        if (nextCount <= 0) {
-          clearInterval(interval);
-
-          if (!completedRef.current) {
-            completedRef.current = true;
-            onComplete?.();
-          }
-        }
-
-        return nextCount;
-      });
+      setWaitingCount((count) => Math.max(count - decrement, 0));
     }, intervalTime);
 
     return () => {
       clearInterval(interval);
       document.body.style.overflow = "";
     };
-  }, [onComplete]);
+  }, []);
+
+  // 완료 판정은 effect에서 (React 정석)
+  useEffect(() => {
+    if (waitingCount <= 0 && !completedRef.current) {
+      completedRef.current = true;
+      onComplete?.();
+    }
+  }, [waitingCount, onComplete]);
 
   return (
     <div className="fixed inset-0 z-50">
