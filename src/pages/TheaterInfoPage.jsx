@@ -60,11 +60,16 @@ export default function TheaterInfoPage() {
 
         {/* 콘텐츠 영역 */}
         <div className="p-8">
-          {/* 메타 정보 그리드 */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          {/* 메타 정보 - 모바일: 리스트, 데스크톱: 카드 그리드 */}
+          <div className="hidden sm:grid grid-cols-3 gap-3 mb-8">
             <InfoCard label="기간" value={movieInfo.dates.join(" - ")} />
             <InfoCard label="장소" value={movieInfo.venue} />
             <InfoCard label="러닝타임" value={movieInfo.duration} />
+          </div>
+          <div className="sm:hidden mb-8 space-y-2">
+            <InfoRow label="기간" value={movieInfo.dates.join(" - ")} />
+            <InfoRow label="장소" value={movieInfo.venue} />
+            <InfoRow label="러닝타임" value={movieInfo.duration} />
           </div>
 
           {/* 줄거리 */}
@@ -109,8 +114,8 @@ export default function TheaterInfoPage() {
           </div>
 
           {/* 가격 & 버튼 */}
-          <div className="flex items-center justify-between p-6 bg-[var(--color-border-light)] rounded-2xl">
-            <div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-[var(--color-border-light)] rounded-2xl">
+            <div className="text-center sm:text-left">
               <p className="text-xs text-[var(--color-text-muted)] mb-1">가격</p>
               <p className="text-2xl font-bold text-[var(--color-text)]">
                 ₩{priceNumber.toLocaleString()}
@@ -118,7 +123,7 @@ export default function TheaterInfoPage() {
             </div>
             <button
               onClick={handleReserveClick}
-              className="px-10 py-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white font-bold rounded-2xl shadow-[0_8px_24px_rgba(99,102,241,0.4)] hover:shadow-[0_12px_32px_rgba(99,102,241,0.5)] hover:-translate-y-0.5 transition-all duration-200"
+              className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white font-bold rounded-2xl shadow-[0_8px_24px_rgba(99,102,241,0.4)] hover:shadow-[0_12px_32px_rgba(99,102,241,0.5)] hover:-translate-y-0.5 transition-all duration-200"
             >
               예매하기
             </button>
@@ -135,7 +140,16 @@ function InfoCard({ label, value }) {
   return (
     <div className="p-4 bg-[var(--color-border-light)] rounded-2xl">
       <p className="text-xs text-[var(--color-text-muted)] mb-1">{label}</p>
-      <p className="text-sm font-semibold text-[var(--color-text)] truncate">{value}</p>
+      <p className="text-sm font-semibold text-[var(--color-text)]">{value}</p>
+    </div>
+  );
+}
+
+function InfoRow({ label, value }) {
+  return (
+    <div className="flex justify-between py-2 border-b border-[var(--color-border)]">
+      <span className="text-sm text-[var(--color-text-muted)]">{label}</span>
+      <span className="text-sm font-medium text-[var(--color-text)]">{value}</span>
     </div>
   );
 }
