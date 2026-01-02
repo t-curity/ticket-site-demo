@@ -7,7 +7,7 @@ import Card from "@components/Card";
 import movieInfo from "@data/movieInfo";
 import messages from "@data/messages";
 
-import ticketService from "@api/TicketService";
+import { ticketService } from "@api/TicketService";
 
 export default function ReservationPage() {
   const { TCuritySDK } = window;
