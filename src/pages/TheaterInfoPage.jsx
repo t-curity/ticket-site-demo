@@ -27,8 +27,17 @@ export default function TheaterInfoPage() {
     <main className="min-h-screen bg-[var(--color-bg)] py-6 px-4">
       {/* 헤더 */}
       <header className="max-w-4xl mx-auto mb-4 px-2">
-        <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
+        <nav className="flex items-center justify-between text-sm">
           <span className="text-[var(--color-primary)] font-semibold">공연정보</span>
+          <a 
+            href="https://tcurity.com" 
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-border-light)] hover:bg-[var(--color-border)] rounded-full text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            T:CURITY
+          </a>
         </nav>
       </header>
 
